@@ -27,7 +27,10 @@ def menu(bet):
             uCards.append(random.choice(tCards))
 
         elif play == 'S' or play == 's':
-            dCards.append(random.choice(tCards))
+            while int(dValue) < 17:
+                dCards.append(random.choice(tCards))
+                count()
+
         else:
             count()
 
@@ -52,8 +55,6 @@ def uEval():
     for i in uCards:
         if uValue > 21 and i == 'A':
             uValue = int(uValue) - 10
-    print(uCards)
-    print(f"Your cards are worth {uValue}.\n")
 
 def dEval():
 
@@ -76,17 +77,19 @@ def dEval():
     for i in dCards:
         if dValue > 21 and i == 'A':
             dValue = int(dValue) - 10
-    print(dCards)
-    print(f"The dealer has cards worth {dValue}.\n")
+
+    if int(uValue) > 17 and int(dValue) <= 17:
+        dCards.append(random.choice(tCards))
+
 
 def uCheck():
 
     if int(uValue) == 21:
-        print(f"YOU GOT A BLACKJACK!\n")
+        print("YOU GOT A BLACKJACK!\n")
         walletWin(bet)
         
     elif int(uValue) > 21:
-        print(f"YOU BUSTED!\n")
+        print("YOU BUSTED!\n")
         walletLoss(bet)
         pass
 
@@ -94,18 +97,21 @@ def uCheck():
         pass
 
     elif int(uValue) == 21 and int(dValue) == 21:
-        print(f"PUSH!\n")
-    
+        print("PUSH!\n")
+
+    elif int(dValue) > 17 and int(uValue) > 17 and int(dValue) > int(uValue):
+        print("DEALER WINS!\n")
+        pass
 
 def dCheck():
 
     if int(dValue) == 21:
-        print(f"THE DEALER GOT A BLACKJACK!\n")
+        print("THE DEALER GOT A BLACKJACK!\n")
         walletLoss(bet)
         pass
 
     elif int(dValue) > 21:
-        print(f"THE DEALER BUSTED!\n")
+        print("THE DEALER BUSTED!\n")
         walletWin(bet)
         pass
 
@@ -113,23 +119,40 @@ def dCheck():
         pass
 
     elif int(uValue) == 21 and int(dValue) == 21:
-        print(f"PUSH!\n")
+        print("PUSH!\n")
         pass
 
-    if int(dValue) > 17 and int(dValue) < int(uValue):
+    while int(dValue) > 17 and int(uValue) < int(dValue) and int(dValue) < 17:
         dCards.append(random.choice(tCards))
         count()
+    
+    if dValue > 17 and uValue > 21:
+        print("DEALER WINS\n")
+        walletLoss(bet)
+    
+    elif uValue > 17 and dValue < 17:
+        pass
+
+    elif int(dValue) > 17 and int(uValue) > 17 and int(dValue) < int(uValue):
+        print("YOU WIN!\n")
+        pass
 
 def count():
 
         uEval()
+        print(uCards)
         time.sleep(.5)
+        print(f"Your cards are worth {uValue}.\n")
 
         dEval()
+        print(dCards)
+        time.sleep(.5)
+        print(f"The dealer has cards worth {dValue}.\n")
         time.sleep(.5)
 
         uCheck()
         dCheck()
+
 
 def walletRead():
 
@@ -144,7 +167,7 @@ def walletRead():
                 bet = 1
                 return bet
 
-            print(f"Your balance is: {int(docRead)}.\nHow many would you like to bet?:\n")
+            print(f"Your balance is: {int(docRead)}.\nHow much would you like to bet?:\n")
             bet = input()
 
             if int(docRead) >= int(bet) and int(bet) >= 0:
@@ -197,11 +220,12 @@ try:
     os.system('cls')
     print("------------------------- WELCOME TO BLACKJACK -------------------------")
 
-    
-
     uCards.append(random.choice(tCards))
     uCards.append(random.choice(tCards))
     dCards.append(random.choice(tCards))
+    uEval()
+    dEval()
+
     bet = walletRead()
 
     while run == True:
