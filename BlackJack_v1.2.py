@@ -116,7 +116,7 @@ def dCheck():
         print(f"PUSH!\n")
         pass
 
-    if int(dValue) > 17:
+    if int(dValue) > 17 and int(dValue) < int(uValue):
         dCards.append(random.choice(tCards))
         count()
 
@@ -140,12 +140,13 @@ def walletRead():
         with open('balance.txt', 'r') as docRead:
             docRead = docRead.read()
 
-            if docRead == "0":
-                docRead = int(docRead) + 1
-            
+            if int(docRead) <= 0:
+                bet = 1
+                return bet
+
             print(f"Your balance is: {int(docRead)}.\nHow many would you like to bet?:\n")
             bet = input()
-              
+
             if int(docRead) >= int(bet) and int(bet) >= 0:
                 allowBet = True
                 return bet
@@ -163,7 +164,7 @@ def walletWin(bet):
         file.read = balance
         newBal = int(bet) + int(balance)
 
-        if newBal == 0:
+        if newBal == 0 or newBal < 0:
             newBal == 1
 
     with open('balance.txt', 'w') as docWrite:
