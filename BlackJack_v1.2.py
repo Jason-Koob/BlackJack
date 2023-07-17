@@ -141,13 +141,14 @@ def walletRead():
             print(f"Your balance is: {int(docRead)} credits.\nHow many would you like to bet?:\n")
             bet = input()
             
-            if int(bet) > int(docRead):
-                os.system('cls')
-                print(f"You cannot bet {int(bet)} as you only have {docRead} credits.\n")
+            if int(docRead) >= int(bet) and int(bet) >= 0:
                 allowBet = True
+                return bet
             else:
                 allowBet == False
-                return bet
+                os.system('cls')
+                print(f"You cannot bet {int(bet)} as you only have {docRead} credits.\n")
+
 
 def walletWin(bet):
 
