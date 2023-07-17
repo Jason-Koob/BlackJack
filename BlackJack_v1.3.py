@@ -97,36 +97,49 @@ def check():
 
     global bet
     
+    print("")
     uEval()
     print("")
     time.sleep(.5)
     dEval()
 
     if int(uValue) > 21:
+        time.sleep(.5)
         print("\nYOU BUSTED!\n")
         walletLoss(bet)
         pass
     elif int(dValue) > 21:
+        time.sleep(.5)
         print("\nDEALER BUSTED!\n")
         walletWin(bet)
         pass
     elif int(uValue) == 21:
+        time.sleep(.5)
         print("\nBLACKJACK!\n")
-        walletLoss(bet)
+        walletWin(bet)
         pass
     elif int(dValue) == 21:
+        time.sleep(.5)
         print("\nDEALER BLACKJACK!\n")
         walletLoss(bet)
         pass
-    elif int(uValue) >= 17 and int(dValue) >= 17 and int(uValue) > int(dValue):
-        print("\nYOU WIN!\n")
+    elif int(dValue) >= 17 and int(dValue) >= int(uValue):
+        time.sleep(.5)
+        print("\nYOU LOSE!\n")
         walletLoss(bet)
         pass
+    elif int(uValue) >= 17 and int(dValue) >= 17 and int(uValue) > int(dValue):
+        time.sleep(.5)
+        print("\nYOU WIN!\n")
+        walletWin(bet)
+        pass
     elif int(uValue) >= 17 and int(dValue) >= 17 and int(dValue) > int(uValue):
+        time.sleep(.5)
         print("\nYOU LOSE!\n")
         walletLoss(bet)
         pass
     else:
+        time.sleep(.5)
         pass
 
 def walletRead():
@@ -165,9 +178,8 @@ def walletWin(bet):
     with open('balance.txt', 'w') as docWrite:
         docWrite.write(str(newBal))
         print(f"Bet: {bet}\nNew balance: {newBal}\n")
-        time.sleep(3)
-        quit()
-        
+        wait()
+
 def walletLoss(bet):
     
     with open('balance.txt', 'r') as file:
@@ -181,8 +193,14 @@ def walletLoss(bet):
     with open('balance.txt', 'w') as docWrite:
         docWrite.write(str(newBal))
         print(f"Bet: {bet}\nNew balance: {newBal}\n")
-        time.sleep(3)
+        wait()
+
+def wait():
+    if input():
         quit()
+    else:
+        quit()
+    
 
 try:
     os.system('cls')
