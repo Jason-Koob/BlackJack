@@ -10,74 +10,120 @@ userValue = 0
 dealerCards = []
 dealerValue = 0
 
+blackJack = True
+
 bet = 0
+
+menu = "Enter H - Receive another card.\nEnter P - Keep the cards you have.\nEnter D - Receive your final card and double your bet.\n"
 
 def playerChoice():
 
-    global userCards
-    global userValue
-    global bet
+      global userCards
+      global userValue
 
-    # Generate user cards
-    userCards.append(random.choice(cardFace))
-    userCards.append(random.choice(cardFace))
+      global bet
 
-    print(f"\nYour cards are:\n{userCards}\n")
+      global dealerValue
+      global dealerCards
 
-    userConvertValue()
-    print(f"Your cards are valued at: {userValue}\n")
+      # Generate user cards
 
+      # User menu
+      print(menu)
 
-    # User menu
-    print("Enter H - Receive another card.\nEnter P - Keep the cards you have.\nEnter D - Receive your final card and double your bet.")
-    menuChoice = input()
+      time.sleep(1)
 
-    # Hit
-    if menuChoice == "H" or menuChoice == "h":
+      menuChoice = input()
 
-        userValue = 0
+      # Hit
+      if menuChoice == "H" or menuChoice == "h":
 
-        userCards.append(random.choice(cardFace))
-        print(f"\nYour cards are:\n{userCards}\n")
+         userValue = 0
 
-        userConvertValue()
-        print(f"Your cards are valued at: {userValue}\n")
+         userCards.append(random.choice(cardFace))
+         
+         print(f"\nYour cards are:\n{userCards}\n")
 
-    # Pass
-    elif menuChoice == "P" or menuChoice == "P":
-        pass
-        # dealer plays
+         time.sleep(1)
 
-    # Double-down
-    elif menuChoice == "D" or menuChoice == "d":
+         userConvertValue()
+         print(f"Your cards are valued at: {userValue}\n")
 
-        userValue = 0
+         time.sleep(1)
 
-        userCards.append(random.choice(cardFace))
-        print(f"\nYour cards are:\n{userCards}\n")
+         dealer()
 
-        bet = int(bet) + int(bet)
+         dealerConvertValue()
+         
+      # Double-down
+      elif menuChoice == "D" or menuChoice == "d":
+         userValue = 0
 
-        userConvertValue()
-        print(f"Your cards are valued at: {userValue}\n")
+         userCards.append(random.choice(cardFace))
+         print(f"\nYour cards are:\n{userCards}\n")
 
-    else:
-        userValue = 0
+         time.sleep(1)
 
-        playerChoice()
+         userConvertValue()
+         print(f"Your cards are valued at: {userValue}\n")
 
+         time.sleep(1)
 
+         bet = int(bet) + int(bet)
+         print(f"Your current bet is: {bet}\n")
 
-    playerChoice()
+         time.sleep(1)
+         
+         dealerValue = 0
+         dealer()
+         
 
+      # Pass
+      elif menuChoice == "P" or menuChoice == "p":
+         pass
+
+         dealerValue = 0
+         dealer()
+
+      else:
+         userValue = 0
+
+# Dealer action
 def dealer():
     dealerCards.append(random.choice(cardFace))
-    dealerCards.append(random.choice(cardFace))
-
-    dealerConvertValue()
-
+   
     print(f"The dealer has cards:\n{dealerCards}")
-    print(f"The dealer's cards are valued at {dealerValue}")
+
+    time.sleep(1)
+
+    dealerValue = 0
+    dealerConvertValue()
+    print(f"The dealer's cards are valued at {dealerValue}\n")
+
+    time.sleep(1)
+
+    
+    if userValue == 21:
+         print(f"YOU HIT A BLACKJACK")
+
+    elif dealerValue == 21:
+         print(f"THE DEALER HIT A BLACKJACK")
+
+    elif int(userValue) > 21:
+         print(f"YOU BUST")
+         input()
+         TypeError
+
+    elif int(dealerValue) > 21:
+         print(f"DEALER BUST")
+         input()
+         TypeError
+
+    elif 21 - int(dealerValue) > 21 - int(userValue):
+        print(f"YOU WIN\nDEALER: {dealerValue}\nYOU: {userValue}\n")
+
+    elif 21 - int(dealerValue) < 21 - int(userValue):
+        print(f"DEALER WINS\nDEALER: {dealerValue}\nYOU: {userValue}\n")
 
 
 # Convert the face value of cards into a value that can be compared (user)
@@ -115,10 +161,12 @@ def dealerConvertValue():
                 dealerValue = int(dealerValue) + 10
              elif card == 'A':
                 dealerValue = int(dealerValue) + 11
-                if dealerValue > 21:
-                    dealerValue = dealerValue - 10
              else:
                 dealerValue = dealerValue + int(card)
+
+        for card in dealerCards:
+            if dealerValue > 21 and card == 'A':
+                dealerValue = int(dealerValue) - 10
 
 os.system('cls')
 
@@ -127,4 +175,23 @@ time.sleep(1)
 
 print("What is your bet?:\n")
 bet = input()
-playerChoice()
+
+userCards.clear
+
+userCards.append(random.choice(cardFace))
+userCards.append(random.choice(cardFace))
+
+dealerCards.append(random.choice(cardFace))
+
+userConvertValue()
+dealerConvertValue()
+
+print(f"You have cards:\n{dealerCards}")
+print(f"Your cards are valued at {dealerValue}\n\n")
+
+print(f"The dealer has cards:\n{dealerCards}")
+print(f"The dealer's cards are valued at {dealerValue}\n")
+
+while blackJack == True:
+   playerChoice()
+
