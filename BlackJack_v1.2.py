@@ -28,7 +28,6 @@ def menu(bet):
 
         elif play == 'S' or play == 's':
             dCards.append(random.choice(tCards))
-            
         else:
             count()
 
@@ -119,7 +118,6 @@ def dCheck():
 
     if int(dValue) > 17:
         dCards.append(random.choice(tCards))
-        print(dCards)
         count()
 
 def count():
