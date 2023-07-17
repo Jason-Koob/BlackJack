@@ -23,7 +23,7 @@ def menu(bet):
         elif play == 'D' or play == 'd':
             bet = int(bet) + int(bet)
             time.sleep(.5)
-            print(f"Your bet is now {bet} credits.")
+            print(f"Your bet is now {bet}.\n")
             uCards.append(random.choice(tCards))
 
         elif play == 'S' or play == 's':
@@ -53,7 +53,7 @@ def uEval():
         if uValue > 21 and i == 'A':
             uValue = int(uValue) - 10
     print(uCards)
-    print(f"Your cards are worth {uValue} credits.\n")
+    print(f"Your cards are worth {uValue}.\n")
 
 def dEval():
 
@@ -77,7 +77,7 @@ def dEval():
         if dValue > 21 and i == 'A':
             dValue = int(dValue) - 10
     print(dCards)
-    print(f"The dealer has cards worth {dValue} credits.\n")
+    print(f"The dealer has cards worth {dValue}.\n")
 
 def uCheck():
 
@@ -134,22 +134,26 @@ def count():
 def walletRead():
 
     global allowBet
+    global run
 
     while allowBet == True:
         with open('balance.txt', 'r') as docRead:
             docRead = docRead.read()
-            print(f"Your balance is: {int(docRead)} credits.\nHow many would you like to bet?:\n")
-            bet = input()
+
+            if docRead == "0":
+                docRead = int(docRead) + 1
             
+            print(f"Your balance is: {int(docRead)}.\nHow many would you like to bet?:\n")
+            bet = input()
+              
             if int(docRead) >= int(bet) and int(bet) >= 0:
                 allowBet = True
                 return bet
             else:
                 allowBet == False
                 os.system('cls')
-                print(f"You cannot bet {int(bet)} as you only have {docRead} credits.\n")
-
-
+                print(f"You cannot bet {int(bet)} as you only have {docRead}.\n")
+        
 def walletWin(bet):
 
     global run
@@ -158,6 +162,9 @@ def walletWin(bet):
         balance = file.read()
         file.read = balance
         newBal = int(bet) + int(balance)
+
+        if newBal == 0:
+            newBal == 1
 
     with open('balance.txt', 'w') as docWrite:
         docWrite.write(str(newBal))
@@ -174,24 +181,32 @@ def walletLoss(bet):
         file.read = balance
         newBal = -int(bet) + int(balance)
 
+        if newBal == 0:
+            newBal == 1
+
     with open('balance.txt', 'w') as docWrite:
         docWrite.write(str(newBal))
         print(f"Bet: {bet}\nNew balance: {newBal}")
         time.sleep(3)
         quit()
 
+try:
+    walletRead
+    run = True
+    os.system('cls')
+    print("------------------------- WELCOME TO BLACKJACK -------------------------")
 
-run = True
-os.system('cls')
-print("------------------------- WELCOME TO BLACKJACK -------------------------")
+    
 
-uCards.append(random.choice(tCards))
-uCards.append(random.choice(tCards))
+    uCards.append(random.choice(tCards))
+    uCards.append(random.choice(tCards))
+    dCards.append(random.choice(tCards))
+    bet = walletRead()
 
-dCards.append(random.choice(tCards))
+    while run == True:
+        count()
+        menu(bet)
 
-bet = walletRead()
-
-while run == True:
-    count()
-    menu(bet)
+except ValueError:
+        with open('balance.txt', 'w') as docWrite:
+            docWrite.write('1')
