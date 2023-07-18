@@ -4,9 +4,3 @@
 2. The dealer starts with 1 face-up card
 3. The dealer can only draw when the player has chosen to stay
 4. The dealer can only draw cards until they are over 17
-
-
-
-dCards.remove("X")
-
-print(dCards)
